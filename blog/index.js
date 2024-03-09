@@ -23,6 +23,7 @@
 // server.listen(3000);
 
 const express = require("express");
+const path = require("path");
 
 const app = express();
 
@@ -31,13 +32,17 @@ app.listen(3000, () => {
 });
 
 app.get("/", (req, res) => {
-  res.json({
-    name: "alex njuguna",
-  });
+  res.sendFile(path.resolve(__dirname, "index.html"));
 });
 
 app.get("/about", (req, res) => {
-  res.json({
-    designation: "software engineer",
-  });
+  res.sendFile(path.resolve(__dirname, "about.html"));
+});
+
+app.get("/contact", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "contact.html"));
+});
+
+app.get("*", (req, res) => {
+  res.status(404).sendFile(path.resolve(__dirname, "notFound.html"));
 });
