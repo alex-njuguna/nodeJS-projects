@@ -29,3 +29,15 @@ const app = express();
 app.listen(3000, () => {
   console.log("server is listening on port 3000");
 });
+
+app.get("/", (req, res) => {
+  res.json({
+    name: "alex njuguna",
+  });
+});
+
+app.get("/about", (req, res) => {
+  res.json({
+    designation: "software engineer",
+  });
+});
