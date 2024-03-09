@@ -1,3 +1,3 @@
 ## blog
 
- a blog a pp with nodejs and express
+a blog app with nodejs and express
