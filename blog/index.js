@@ -19,9 +19,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Define routes
-app.get("/", (req, res) => {
-  const blogPosts = BlogPost.find({});
-  res.render("index", blogPosts);
+app.get("/", async (req, res) => {
+  const blogPosts = await BlogPost.find({});
+  console.log(blogPosts);
+  res.render("index", { blogPosts });
 });
 app.get("/about", (req, res) => res.render("about"));
 app.get("/post", (req, res) => res.render("post"));
