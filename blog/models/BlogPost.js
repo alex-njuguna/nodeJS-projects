@@ -1,11 +1,11 @@
-const mongoose = require('mongoose')
-const Schema = mongoose.Schema
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
 const BlogPostSchema = new Schema({
-    title: String,
-    body: String
-})
+  title: String,
+  body: String,
+});
 
-const BlogPost = mongoose.model('BlogPost', BlogPostSchema)
+const BlogPost = mongoose.model("BlogPost", BlogPostSchema);
 
-module.exports = BlogPost
+module.exports = BlogPost;
