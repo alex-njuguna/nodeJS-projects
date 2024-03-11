@@ -4,9 +4,11 @@ const ejs = require("ejs");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const BlogPost = require("./models/BlogPost");
+const fileUpload = require("express-fileupload");
 
 const app = express();
 
+app.use(fileUpload());
 // Set view engine and public directory
 app.set("view engine", "ejs");
 app.use(express.static(path.resolve(__dirname, "public")));
@@ -22,7 +24,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // home page
 app.get("/", async (req, res) => {
   const blogPosts = await BlogPost.find({});
-  console.log(blogPosts);
   res.render("index", { blogPosts });
 });
 
@@ -42,7 +43,6 @@ app.get("/posts/search-results", (req, res) => {
 // get single post
 app.get("/post/:id", async (req, res) => {
   const blogPost = await BlogPost.findById(req.params.id);
-  console.log(blogPost);
   res.render("post", { blogPost });
 });
 
@@ -53,10 +53,12 @@ app.get("/contact", (req, res) => res.render("contact"));
 app.get("/posts/new", (req, res) => res.render("create"));
 
 // Handle form submission
-app.post("/posts/store", async (req, res) => {
-  await BlogPost.create(req.body);
-
-  res.redirect("/");
+app.post("/posts/store", (req, res) => {
+  let image = req.files.image;
+  image.mv(path.resolve(__dirname, "public/img", image.name), async (error) => {
+    await BlogPost.create({ ...req.body, image: "/img/" + image.name });
+    res.redirect("/");
+  });
 });
 
 // Start server
