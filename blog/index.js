@@ -3,45 +3,35 @@ const path = require("path");
 const ejs = require("ejs");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-const BlogPost = require("./models/BlogPost");
 const fileUpload = require("express-fileupload");
+const BlogPost = require("./models/BlogPost");
 
 const app = express();
 
+// Middleware
 app.use(fileUpload());
-// Set view engine and public directory
 app.set("view engine", "ejs");
 app.use(express.static(path.resolve(__dirname, "public")));
-
-// Connect to MongoDB
-mongoose.connect("mongodb://localhost:27017/blog_database");
-
-// Body parser middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Define routes
-// home page
+// MongoDB Connection
+mongoose.connect("mongodb://localhost:27017/blog_database");
+
+// Routes
 app.get("/", async (req, res) => {
   const blogPosts = await BlogPost.find({});
   res.render("index", { blogPosts });
 });
 
-//search page
-let searchBlogPosts = undefined;
-
 app.post("/posts/search", async (req, res) => {
   const search = req.body.search;
-  searchBlogPosts = await BlogPost.find({ title: new RegExp(search, "i") });
-  console.log(searchBlogPosts); // Log the actual search results
-  res.redirect("/posts/search-results"); // Redirect to the results page
-});
-
-app.get("/posts/search-results", (req, res) => {
+  const searchBlogPosts = await BlogPost.find({
+    title: new RegExp(search, "i"),
+  });
   res.render("search", { searchBlogPosts });
 });
 
-// get single post
 app.get("/post/:id", async (req, res) => {
   const blogPost = await BlogPost.findById(req.params.id);
   res.render("post", { blogPost });
@@ -53,13 +43,16 @@ app.get("/contact", (req, res) => res.render("contact"));
 
 app.get("/posts/new", (req, res) => res.render("create"));
 
-// Handle form submission
-app.post("/posts/store", (req, res) => {
-  let image = req.files.image;
-  image.mv(path.resolve(__dirname, "public/img", image.name), async (error) => {
+app.post("/posts/store", async (req, res) => {
+  try {
+    const image = req.files.image;
+    await image.mv(path.resolve(__dirname, "public/img", image.name));
     await BlogPost.create({ ...req.body, image: "/img/" + image.name });
     res.redirect("/");
-  });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
 });
 
 // Start server
