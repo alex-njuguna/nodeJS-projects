@@ -24,11 +24,14 @@ app.get("/", async (req, res) => {
   res.render("index", { blogPosts });
 });
 
+let searchBlogPosts = undefined;
 app.post("/posts/search", async (req, res) => {
   const search = req.body.search;
-  const searchBlogPosts = await BlogPost.find({
-    title: new RegExp(search, "i"),
-  });
+  searchBlogPosts = await BlogPost.find({ title: new RegExp(search, "i") });
+  res.redirect("/posts/search-results");
+});
+
+app.get("/posts/search-results", (req, res) => {
   res.render("search", { searchBlogPosts });
 });
 
