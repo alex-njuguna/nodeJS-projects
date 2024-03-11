@@ -19,15 +19,17 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Define routes
+// home page
 app.get("/", async (req, res) => {
   const blogPosts = await BlogPost.find({});
   console.log(blogPosts);
   res.render("index", { blogPosts });
 });
 
-let searchBlogPosts = undefined
+//search page
+let searchBlogPosts = undefined;
 app.post("/posts/search", async (req, res) => {
-  const search = req.body.search
+  const search = req.body.search;
   searchBlogPosts = await BlogPost.find({ title: /search/ });
   console.log(searchBlogPosts);
 });
@@ -37,8 +39,15 @@ app.get("/posts/search-results", (req, res) => {
   res.render("search", { searchBlogPosts });
 });
 
+// get single post
+app.get("/post/:id", async (req, res) => {
+  const blogPost = await BlogPost.findById(req.params.id);
+  console.log(blogPost);
+  res.render("post", { blogPost });
+});
+
 app.get("/about", (req, res) => res.render("about"));
-app.get("/post", (req, res) => res.render("post"));
+
 app.get("/contact", (req, res) => res.render("contact"));
 
 app.get("/posts/new", (req, res) => res.render("create"));
