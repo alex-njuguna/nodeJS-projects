@@ -29,12 +29,13 @@ app.get("/", async (req, res) => {
 
 //search page
 let searchBlogPosts = undefined;
+
 app.post("/posts/search", async (req, res) => {
   const search = req.body.search;
-  searchBlogPosts = await BlogPost.find({ title: /search/ });
-  console.log(searchBlogPosts);
+  searchBlogPosts = await BlogPost.find({ title: new RegExp(search, "i") });
+  console.log(searchBlogPosts); // Log the actual search results
+  res.redirect("/posts/search-results"); // Redirect to the results page
 });
-console.log(searchBlogPosts);
 
 app.get("/posts/search-results", (req, res) => {
   res.render("search", { searchBlogPosts });
