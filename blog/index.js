@@ -24,9 +24,23 @@ app.get("/", async (req, res) => {
   console.log(blogPosts);
   res.render("index", { blogPosts });
 });
+
+let searchBlogPosts = undefined
+app.post("/posts/search", async (req, res) => {
+  const search = req.body.search
+  searchBlogPosts = await BlogPost.find({ title: /search/ });
+  console.log(searchBlogPosts);
+});
+console.log(searchBlogPosts);
+
+app.get("/posts/search-results", (req, res) => {
+  res.render("search", { searchBlogPosts });
+});
+
 app.get("/about", (req, res) => res.render("about"));
 app.get("/post", (req, res) => res.render("post"));
 app.get("/contact", (req, res) => res.render("contact"));
+
 app.get("/posts/new", (req, res) => res.render("create"));
 
 // Handle form submission
