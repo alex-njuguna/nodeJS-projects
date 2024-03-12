@@ -14,6 +14,7 @@ const contactController = require("./controllers/contact");
 const aboutController = require("./controllers/about");
 const newUserController = require("./controllers/newUser");
 const storeUserController = require("./controllers/storeUser");
+const loginController = require("./controllers/login");
 
 const app = express();
 
@@ -55,6 +56,8 @@ app.post("/posts/store", storePostController);
 // users
 app.get("/auth/register", newUserController);
 app.post("/users/register", storeUserController);
+
+app.get("/auth/login", loginController);
 
 // Start server
 const PORT = 4000;
