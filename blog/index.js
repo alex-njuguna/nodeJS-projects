@@ -5,13 +5,14 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const fileUpload = require("express-fileupload");
 const BlogPost = require("./models/BlogPost");
+const validateMiddleWare = require("./middleware/validationMiddleware");
 const homeController = require("./controllers/home");
 const storePostController = require("./controllers/storePost");
 const getPostController = require("./controllers/getPost");
 const newPostController = require("./controllers/newPost");
 const contactController = require("./controllers/contact");
 const aboutController = require("./controllers/about");
-const validateMiddleWare = require("./middleware/validationMiddleware");
+const newUserController = require("./controllers/newUser");
 
 const app = express();
 
@@ -49,6 +50,9 @@ app.get("/contact", contactController);
 app.get("/posts/new", newPostController);
 
 app.post("/posts/store", storePostController);
+
+// users
+app.get("/auth/register", newUserController);
 
 // Start server
 const PORT = 4000;
