@@ -5,12 +5,13 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const fileUpload = require("express-fileupload");
 const BlogPost = require("./models/BlogPost");
-const homeController = require('./controllers/home')
-const storePostController = require('./controllers/storePost')
-const getPostController = require('./controllers/getPost')
+const homeController = require("./controllers/home");
+const storePostController = require("./controllers/storePost");
+const getPostController = require("./controllers/getPost");
 const newPostController = require("./controllers/newPost");
 const contactController = require("./controllers/contact");
 const aboutController = require("./controllers/about");
+const validateMiddleWare = require("./middleware/validationMiddleware");
 
 const app = express();
 
@@ -20,12 +21,6 @@ app.set("view engine", "ejs");
 app.use(express.static(path.resolve(__dirname, "public")));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-const validateMiddleWare = (req, res, next) => {
-  if (req.files == null || req.body.title === null || req.body.body === null) {
-    return res.redirect("/posts/new");
-  }
-  next();
-};
 app.use("/posts/store", validateMiddleWare);
 
 // MongoDB Connection
