@@ -6,6 +6,8 @@ const bodyParser = require("body-parser");
 const fileUpload = require("express-fileupload");
 const BlogPost = require("./models/BlogPost");
 const newPostController = require("./controllers/newPost");
+const contactController = require("./controllers/contact");
+const aboutController = require("./controllers/about");
 
 const app = express();
 
@@ -48,9 +50,9 @@ app.get("/post/:id", async (req, res) => {
   res.render("post", { blogPost });
 });
 
-app.get("/about", (req, res) => res.render("about"));
+app.get("/about", aboutController);
 
-app.get("/contact", (req, res) => res.render("contact"));
+app.get("/contact", contactController);
 
 app.get("/posts/new", newPostController);
 
