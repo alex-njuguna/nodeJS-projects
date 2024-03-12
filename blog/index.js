@@ -5,6 +5,9 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const fileUpload = require("express-fileupload");
 const BlogPost = require("./models/BlogPost");
+const homeController = require('./controllers/home')
+const storePostController = require('./controllers/storePost')
+const getPostController = require('./controllers/getPost')
 const newPostController = require("./controllers/newPost");
 const contactController = require("./controllers/contact");
 const aboutController = require("./controllers/about");
@@ -29,10 +32,7 @@ app.use("/posts/store", validateMiddleWare);
 mongoose.connect("mongodb://localhost:27017/blog_database");
 
 // Routes
-app.get("/", async (req, res) => {
-  const blogPosts = await BlogPost.find({});
-  res.render("index", { blogPosts });
-});
+app.get("/", homeController);
 
 let searchBlogPosts = undefined;
 app.post("/posts/search", async (req, res) => {
@@ -45,10 +45,7 @@ app.get("/posts/search-results", (req, res) => {
   res.render("search", { searchBlogPosts });
 });
 
-app.get("/post/:id", async (req, res) => {
-  const blogPost = await BlogPost.findById(req.params.id);
-  res.render("post", { blogPost });
-});
+app.get("/post/:id", getPostController);
 
 app.get("/about", aboutController);
 
@@ -56,17 +53,7 @@ app.get("/contact", contactController);
 
 app.get("/posts/new", newPostController);
 
-app.post("/posts/store", async (req, res) => {
-  try {
-    const image = req.files.image;
-    await image.mv(path.resolve(__dirname, "public/img", image.name));
-    await BlogPost.create({ ...req.body, image: "/img/" + image.name });
-    res.redirect("/");
-  } catch (error) {
-    console.error(error);
-    res.status(500).send("Internal Server Error");
-  }
-});
+app.post("/posts/store", storePostController);
 
 // Start server
 const PORT = 4000;
