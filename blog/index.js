@@ -14,6 +14,13 @@ app.set("view engine", "ejs");
 app.use(express.static(path.resolve(__dirname, "public")));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+const validateMiddleWare = (req, res, next) => {
+  if (req.files == null || req.body.title === null || req.body.body === null) {
+    return res.redirect("/posts/new");
+  }
+  next();
+};
+app.use("/posts/store", validateMiddleWare);
 
 // MongoDB Connection
 mongoose.connect("mongodb://localhost:27017/blog_database");
