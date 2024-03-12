@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const fileUpload = require("express-fileupload");
 const BlogPost = require("./models/BlogPost");
+const newPostController = require("./controllers/newPost");
 
 const app = express();
 
@@ -51,7 +52,7 @@ app.get("/about", (req, res) => res.render("about"));
 
 app.get("/contact", (req, res) => res.render("contact"));
 
-app.get("/posts/new", (req, res) => res.render("create"));
+app.get("/posts/new", newPostController);
 
 app.post("/posts/store", async (req, res) => {
   try {
