@@ -4,6 +4,7 @@ const ejs = require("ejs");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const fileUpload = require("express-fileupload");
+const flash = require("connect-flash");
 const BlogPost = require("./models/BlogPost");
 const expressSession = require("express-session");
 const validateMiddleWare = require("./middleware/validationMiddleware");
@@ -36,6 +37,7 @@ app.use("*", (req, res, next) => {
   loggedIn = req.session.userId;
   next();
 });
+app.use(flash());
 
 // MongoDB Connection
 mongoose.connect("mongodb://localhost:27017/blog_database");
