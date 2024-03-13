@@ -7,6 +7,7 @@ const fileUpload = require("express-fileupload");
 const BlogPost = require("./models/BlogPost");
 const expressSession = require("express-session");
 const validateMiddleWare = require("./middleware/validationMiddleware");
+const authMiddleware = require('./middleware/authMiddleware')
 const homeController = require("./controllers/home");
 const storePostController = require("./controllers/storePost");
 const getPostController = require("./controllers/getPost");
@@ -52,9 +53,9 @@ app.get("/about", aboutController);
 
 app.get("/contact", contactController);
 
-app.get("/posts/new", newPostController);
+app.get("/posts/new",authMiddleware, newPostController);
 
-app.post("/posts/store", storePostController);
+app.post("/posts/store", authMiddleware, storePostController);
 
 // users
 app.get("/auth/register", newUserController);
