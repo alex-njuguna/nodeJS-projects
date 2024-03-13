@@ -7,7 +7,8 @@ const fileUpload = require("express-fileupload");
 const BlogPost = require("./models/BlogPost");
 const expressSession = require("express-session");
 const validateMiddleWare = require("./middleware/validationMiddleware");
-const authMiddleware = require('./middleware/authMiddleware')
+const authMiddleware = require("./middleware/authMiddleware");
+const redirectIfAuthenticatedMiddleware = require("./middleware/redirectIfAuthenticatedMiddleware");
 const homeController = require("./controllers/home");
 const storePostController = require("./controllers/storePost");
 const getPostController = require("./controllers/getPost");
@@ -53,16 +54,24 @@ app.get("/about", aboutController);
 
 app.get("/contact", contactController);
 
-app.get("/posts/new",authMiddleware, newPostController);
+app.get("/posts/new", authMiddleware, newPostController);
 
 app.post("/posts/store", authMiddleware, storePostController);
 
 // users
-app.get("/auth/register", newUserController);
-app.post("/users/register", storeUserController);
+app.get("/auth/register", redirectIfAuthenticatedMiddleware, newUserController);
+app.post(
+  "/users/register",
+  redirectIfAuthenticatedMiddleware,
+  storeUserController
+);
 
-app.get("/auth/login", loginController);
-app.post("/users/login", loginUserController);
+app.get("/auth/login", redirectIfAuthenticatedMiddleware, loginController);
+app.post(
+  "/users/login",
+  redirectIfAuthenticatedMiddleware,
+  loginUserController
+);
 
 // Start server
 const PORT = 4000;
