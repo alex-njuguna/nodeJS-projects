@@ -10,7 +10,11 @@ module.exports = async (req, res) => {
     });
     res.redirect("/");
   } catch (error) {
-    console.error(error);
+    const validationErrors = error.errors
+      ? Object.keys(error.errors).map((key) => error.errors[key].message)
+      : [];
+
+    req.session.validationErrors = validationErrors;
     res.redirect("/auth/register");
   }
 };
