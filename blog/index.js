@@ -19,9 +19,10 @@ const newUserController = require("./controllers/newUser");
 const storeUserController = require("./controllers/storeUser");
 const loginController = require("./controllers/login");
 const loginUserController = require("./controllers/loginUser");
+const logoutController = require("./controllers/logout");
 
 const app = express();
-global.loggedIn = null
+global.loggedIn = null;
 
 // Middleware
 app.use(fileUpload());
@@ -32,9 +33,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/posts/store", validateMiddleWare);
 app.use(expressSession({ secret: "keyboard cat" }));
 app.use("*", (req, res, next) => {
-  loggedIn = req.session.userId
-  next()
-})
+  loggedIn = req.session.userId;
+  next();
+});
 
 // MongoDB Connection
 mongoose.connect("mongodb://localhost:27017/blog_database");
@@ -77,6 +78,8 @@ app.post(
   redirectIfAuthenticatedMiddleware,
   loginUserController
 );
+
+app.get("/auth/logout", logoutController);
 
 // Start server
 const PORT = 4000;
