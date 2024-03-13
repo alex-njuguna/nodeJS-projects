@@ -81,6 +81,9 @@ app.post(
 
 app.get("/auth/logout", logoutController);
 
+// not found
+app.use((req, res) => res.render("notfound"));
+
 // Start server
 const PORT = 4000;
 app.listen(PORT, () => {
