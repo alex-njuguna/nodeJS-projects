@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const fileUpload = require("express-fileupload");
 const BlogPost = require("./models/BlogPost");
+const expressSession = require("express-session");
 const validateMiddleWare = require("./middleware/validationMiddleware");
 const homeController = require("./controllers/home");
 const storePostController = require("./controllers/storePost");
@@ -26,6 +27,7 @@ app.use(express.static(path.resolve(__dirname, "public")));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/posts/store", validateMiddleWare);
+app.use(expressSession({ secret: "keyboard cat" }));
 
 // MongoDB Connection
 mongoose.connect("mongodb://localhost:27017/blog_database");
