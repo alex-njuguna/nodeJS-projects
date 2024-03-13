@@ -8,7 +8,7 @@ module.exports = async (req, res) => {
       username: req.body.username,
       password: hashedPass,
     });
-    res.redirect("/");
+    res.redirect("/auth/login");
   } catch (error) {
     const validationErrors = error.errors
       ? Object.keys(error.errors).map((key) => error.errors[key].message)
