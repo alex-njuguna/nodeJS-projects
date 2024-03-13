@@ -15,8 +15,10 @@
         <div class="row gx-4 gx-lg-5 justify-content-center">
           <div class="col-md-10 col-lg-8 col-xl-7">
             <div class="site-heading">
-              <h1>Clean Blog</h1>
-              <span class="subheading">A Blog Theme by Start Bootstrap</span>
+              <h1 class="navbar-brand" href="/">
+      Alex<span class="text-danger bg-light border-1 rounded px-1">Blog</span>
+    </h1>
+              <!-- <span class="subheading">A Blog Theme by Start Bootstrap</span> -->
             </div>
           </div>
         </div>
@@ -34,7 +36,7 @@
                 <%= blogPosts[i].title %> 
               </h2>
               <h3 class="post-subtitle">
-                <%= blogPosts[i].body %> 
+                <%= blogPosts[i].body.substring(0, 100) %>... 
               </h3>
             </a>
             <p class="post-meta">
