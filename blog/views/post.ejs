@@ -14,10 +14,9 @@
           <div class="col-md-10 col-lg-8 col-xl-7">
             <div class="post-heading">
               <h1><%= blogPost.title %></h1>
-              <!-- <h2 class="subheading"><%= blogPost.body.substring(0, 20) %>...</h2> -->
               <span class="meta">
                 Posted by
-                <a href="#!"><%= blogPost.username %> </a>
+                <a href="#!"><%= blogPost.userid.username %> </a>
                 <%= blogPost.datePosted.toDateString() %>
               </span>
             </div>
