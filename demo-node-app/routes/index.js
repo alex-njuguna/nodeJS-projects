@@ -33,4 +33,9 @@ router.post(
   }
 );
 
+router.get('/registrations', async (req, res) => {
+  const registrations = await Registration.find({})
+  res.render('index', {registrations, title: 'Listings registrations'})
+})
+
 module.exports = router;
