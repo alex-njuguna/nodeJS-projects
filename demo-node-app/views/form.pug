@@ -8,13 +8,14 @@ block content
                 li= error.msg
     form(action="/", method="post")
         label(for="name") Name: 
-        input(type="text" id="name" name="name" value=data.name) 
+        input(type="text" id="name" name="name" required value=data.name) 
 
         label(for="email") Email: 
         input(
             type="text"
             id="email"
             name="email"
+            required
             value=data.email
         )
 
