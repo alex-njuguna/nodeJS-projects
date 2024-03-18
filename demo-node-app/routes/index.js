@@ -1,7 +1,13 @@
 const express = require("express");
 const { body, validationResult } = require("express-validator");
 const router = express.Router();
+const path = require("path");
+const auth = require("http-auth");
 const Registration = require("../models/Registration");
+
+const basic = auth.basic({
+  file: path.join(__dirname, "../users.htpasswd"),
+});
 
 router.get("/", (req, res) => {
   res.render("form", { title: "Registration form" });
@@ -33,9 +39,9 @@ router.post(
   }
 );
 
-router.get('/registrations', async (req, res) => {
-  const registrations = await Registration.find({})
-  res.render('index', {registrations, title: 'Listings registrations'})
-})
+router.get("/registrations", async (req, res) => {
+  const registrations = await Registration.find({});
+  res.render("index", { registrations, title: "Listings registrations" });
+});
 
 module.exports = router;
